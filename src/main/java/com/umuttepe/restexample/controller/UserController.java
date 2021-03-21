@@ -2,6 +2,7 @@ package com.umuttepe.restexample.controller;
 
 import com.umuttepe.restexample.dto.user.UserDto;
 import com.umuttepe.restexample.entity.User;
+import com.umuttepe.restexample.exception.user.UserNotFoundException;
 import com.umuttepe.restexample.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getUser(@PathVariable Long id) {
+    public UserDto getUser(@PathVariable Long id) throws UserNotFoundException {
         User user = userService.getUser(id);
         return convertToDto(user);
     }
@@ -45,16 +46,15 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) throws UserNotFoundException {
         User oldUser = userService.getUser(id);
         User user = convertToEntity(userDto);
         user.setId(oldUser.getId());
-        user.setCreatedAt(oldUser.getCreatedAt());
         return convertToDto(userService.saveUser(user));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) throws UserNotFoundException {
         userService.deleteUser(id);
     }
 
