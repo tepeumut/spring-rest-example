@@ -1,6 +1,8 @@
 package com.umuttepe.restexample.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,9 +29,11 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private Date createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private Date updatedAt;
 }
